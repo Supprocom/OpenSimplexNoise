@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 WRITTEN OFFER
 
 The source code for any program binaries or compressed scripts included with
-Supprocom.NativeAllocationManagement can be freely obtained at:
+Supprocom.OpenSimplexNoise can be freely obtained at:
 https://github.com/Supprocom/OpenSimplexNoise
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
