@@ -1,0 +1,64 @@
+<Project>
+  <UsingTask TaskName="GeneratePackageReadme"
+             TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourcePath ParameterType="System.String" Required="true" />
+      <OutputPath ParameterType="System.String" Required="true" />
+      <RepositoryCommit ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        if (!Regex.IsMatch(RepositoryCommit, "\\A[0-9a-fA-F]{40}\\z"))
+        {
+            Log.LogError("RepositoryCommit must be a full 40-character Git commit.");
+        }
+        else
+        {
+            var source = File.ReadAllText(SourcePath);
+            const string trackedLink = "[repository]: https://github.com/Supprocom/OpenSimplexNoise";
+            var packagedLink = trackedLink + "/tree/" + RepositoryCommit.ToLowerInvariant();
+            var count = source.Split(new[] { trackedLink }, StringSplitOptions.None).Length - 1;
+
+            if (count != 1)
+            {
+                Log.LogError("The tracked README must contain one repository source link.");
+            }
+            else
+            {
+                var outputDirectory = Path.GetDirectoryName(OutputPath);
+                if (string.IsNullOrEmpty(outputDirectory))
+                {
+                    Log.LogError("The package README output directory is not valid.");
+                }
+                else
+                {
+                    Directory.CreateDirectory(outputDirectory);
+                    File.WriteAllText(OutputPath, source.Replace(trackedLink, packagedLink), new UTF8Encoding(false));
+                }
+            }
+        }
+
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="GenerateCommitLinkedPackageReadme" BeforeTargets="_IntermediatePack">
+    <PropertyGroup>
+      <_PackageReadmeSource>$(MSBuildThisFileDirectory)..\README.md</_PackageReadmeSource>
+      <_PackageReadmeOutput>$(MSBuildProjectDirectory)\$(BaseIntermediateOutputPath)package\README.md</_PackageReadmeOutput>
+    </PropertyGroup>
+
+    <GeneratePackageReadme SourcePath="$(_PackageReadmeSource)"
+                           OutputPath="$(_PackageReadmeOutput)"
+                           RepositoryCommit="$(RepositoryCommit)" />
+
+    <ItemGroup>
+      <None Include="$(_PackageReadmeOutput)" Pack="true" PackagePath="README.md" />
+    </ItemGroup>
+  </Target>
+</Project>

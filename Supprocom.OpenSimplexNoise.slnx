@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Supprocom.OpenSimplexNoise/Supprocom.OpenSimplexNoise.csproj" />
+  <Project Path="Supprocom.OpenSimplexNoise.Tests/Supprocom.OpenSimplexNoise.Tests.csproj" />
+</Solution>

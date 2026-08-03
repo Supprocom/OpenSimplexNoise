@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Supprocom.OpenSimplexNoise</RootNamespace>
+    <AssemblyName>Supprocom.OpenSimplexNoise</AssemblyName>
+    <IsPackable>true</IsPackable>
+    <PackageId>Supprocom.OpenSimplexNoise</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Supprocom</Authors>
+    <Company>Supprocom</Company>
+    <Copyright>Copyright (C) 2026 mkn8rn</Copyright>
+    <Description>A deterministic C# implementation of OpenSimplex Noise with two-dimensional, three-dimensional, and four-dimensional evaluation.</Description>
+    <PackageDescription>A deterministic C# implementation of OpenSimplex Noise with seeded two-dimensional, three-dimensional, and four-dimensional evaluation.</PackageDescription>
+    <PackageLicenseExpression>AGPL-3.0-only AND Unlicense</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Supprocom/OpenSimplexNoise</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>opensimplex;noise;procedural-generation;2d;3d;4d</PackageTags>
+    <PackageReleaseNotes>Initial package release of the VoxelEngine OpenSimplex Noise implementation.</PackageReleaseNotes>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)..\artifacts\packages\</PackageOutputPath>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <SourceRevisionId Condition="'$(RepositoryCommit)' != ''">$(RepositoryCommit)</SourceRevisionId>
+    <InformationalVersion Condition="'$(RepositoryCommit)' != ''">$(Version)+$(RepositoryCommit)</InformationalVersion>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
+    <None Include="..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="THIRD-PARTY-NOTICES.md" />
+    <AssemblyMetadata Include="RepositoryCommit" Value="$(RepositoryCommit)" Condition="'$(RepositoryCommit)' != ''" />
+  </ItemGroup>
+
+  <Import Project="..\build\PackageReadme.targets" />
+</Project>
