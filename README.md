@@ -11,13 +11,14 @@ and four-dimensional coordinates.
 
 The parameterless constructor uses the current clock value as its seed. The
 `OpenSimplexNoise(long seed)` constructor gives the same output for the same seed.
+These compatibility constructors allocate managed arrays.
 
 ## Installation
 
-Use this command to install version 0.1.0.
+Use this command to install version 0.1.1.
 
 ```shell
-dotnet add package Supprocom.OpenSimplexNoise --version 0.1.0
+dotnet add package Supprocom.OpenSimplexNoise --version 0.1.1
 ```
 
 ## Example
@@ -31,8 +32,41 @@ var density = noise.Evaluate(12.5, -4.25, 8.0);
 var sample = noise.Evaluate(12.5, -4.25, 8.0, 0.5);
 ```
 
-Package tests compare exact output bits with the authorized VoxelEngine source.
-The tests include zero, negative, large, epsilon, and double-limit inputs.
+## Allocation-free state
+
+Use the static API when the sampling boundary cannot allocate managed memory.
+The caller owns four permutation tables and one source scratch buffer. Each
+buffer must contain at least 256 bytes, and the buffers must not overlap.
+
+```csharp
+using Supprocom.OpenSimplexNoise;
+
+Span<byte> permutation = stackalloc byte[OpenSimplexNoise.PermutationTableLength];
+Span<byte> permutation2D = stackalloc byte[OpenSimplexNoise.PermutationTableLength];
+Span<byte> permutation3D = stackalloc byte[OpenSimplexNoise.PermutationTableLength];
+Span<byte> permutation4D = stackalloc byte[OpenSimplexNoise.PermutationTableLength];
+Span<byte> sourceScratch = stackalloc byte[OpenSimplexNoise.SourceScratchLength];
+
+OpenSimplexNoise.Initialize(
+    123456,
+    permutation,
+    permutation2D,
+    permutation3D,
+    permutation4D,
+    sourceScratch);
+
+var height = OpenSimplexNoise.Evaluate(permutation, permutation2D, 12.5, -4.25);
+var density = OpenSimplexNoise.Evaluate(permutation, permutation3D, 12.5, -4.25, 8.0);
+var sample = OpenSimplexNoise.Evaluate(permutation, permutation4D, 12.5, -4.25, 8.0, 0.5);
+```
+
+Initialization writes all five buffers. The source scratch buffer is not
+required during evaluation. Successful initialization and evaluation do not
+allocate managed memory.
+
+Package tests compare exact output bits with the published version 0.1.0 output.
+The tests include zero, negative, large, epsilon, and finite double-limit inputs.
+They also measure managed allocations for initialization and evaluation.
 
 ## Source
 

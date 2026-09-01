@@ -5,17 +5,17 @@
     <AssemblyName>Supprocom.OpenSimplexNoise</AssemblyName>
     <IsPackable>true</IsPackable>
     <PackageId>Supprocom.OpenSimplexNoise</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Supprocom</Authors>
     <Company>Supprocom</Company>
     <Copyright>Copyright (C) 2026 mkn8rn</Copyright>
-    <Description>A deterministic C# implementation of OpenSimplex Noise with two-dimensional, three-dimensional, and four-dimensional evaluation.</Description>
-    <PackageDescription>A deterministic C# implementation of OpenSimplex Noise with seeded two-dimensional, three-dimensional, and four-dimensional evaluation.</PackageDescription>
+    <Description>A deterministic C# implementation of OpenSimplex Noise with allocation-free caller-owned state APIs.</Description>
+    <PackageDescription>A deterministic C# implementation of OpenSimplex Noise with allocation-free initialization and two-dimensional, three-dimensional, and four-dimensional evaluation.</PackageDescription>
     <PackageLicenseExpression>AGPL-3.0-only AND Unlicense</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Supprocom/OpenSimplexNoise</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>opensimplex;noise;procedural-generation;2d;3d;4d</PackageTags>
-    <PackageReleaseNotes>Initial package release of the VoxelEngine OpenSimplex Noise implementation.</PackageReleaseNotes>
+    <PackageTags>opensimplex;noise;procedural-generation;allocation-free;span;2d;3d;4d</PackageTags>
+    <PackageReleaseNotes>Adds caller-owned Span initialization and ReadOnlySpan evaluation without managed allocations. Existing constructors and exact output behavior remain available.</PackageReleaseNotes>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\artifacts\packages\</PackageOutputPath>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
