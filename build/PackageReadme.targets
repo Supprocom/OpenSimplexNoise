@@ -50,7 +50,8 @@
   <Target Name="GenerateCommitLinkedPackageReadme" BeforeTargets="_IntermediatePack">
     <PropertyGroup>
       <_PackageReadmeSource>$(MSBuildThisFileDirectory)..\README.md</_PackageReadmeSource>
-      <_PackageReadmeOutput>$(MSBuildProjectDirectory)\$(BaseIntermediateOutputPath)package\README.md</_PackageReadmeOutput>
+      <_PackageReadmeOutput Condition="$([System.IO.Path]::IsPathRooted('$(BaseIntermediateOutputPath)'))">$([System.IO.Path]::Combine('$(BaseIntermediateOutputPath)', 'package', 'README.md'))</_PackageReadmeOutput>
+      <_PackageReadmeOutput Condition="'$(_PackageReadmeOutput)' == ''">$([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', '$(BaseIntermediateOutputPath)', 'package', 'README.md'))</_PackageReadmeOutput>
     </PropertyGroup>
 
     <GeneratePackageReadme SourcePath="$(_PackageReadmeSource)"
