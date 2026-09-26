@@ -80,7 +80,7 @@ The digitalshadow source remains available under its original Unlicense and
 public-domain dedication. Supprocom does not change that upstream license.
 
 Supprocom publishes only its combined work and modifications under
-AGPL-3.0-only. See [LICENSE.md](LICENSE.md) and
+AGPL-3.0-only. See [LICENSE](LICENSE), [NOTICE](NOTICE), and
 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for the complete terms and
 notices.
 
