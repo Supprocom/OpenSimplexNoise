@@ -1,0 +1,13 @@
+#nullable enable
+Supprocom.OpenSimplexNoise.OpenSimplexNoise
+Supprocom.OpenSimplexNoise.OpenSimplexNoise.Evaluate(double x, double y) -> double
+Supprocom.OpenSimplexNoise.OpenSimplexNoise.Evaluate(double x, double y, double z) -> double
+Supprocom.OpenSimplexNoise.OpenSimplexNoise.Evaluate(double x, double y, double z, double w) -> double
+Supprocom.OpenSimplexNoise.OpenSimplexNoise.OpenSimplexNoise() -> void
+Supprocom.OpenSimplexNoise.OpenSimplexNoise.OpenSimplexNoise(long seed) -> void
+const Supprocom.OpenSimplexNoise.OpenSimplexNoise.PermutationTableLength = 256 -> int
+const Supprocom.OpenSimplexNoise.OpenSimplexNoise.SourceScratchLength = 256 -> int
+static Supprocom.OpenSimplexNoise.OpenSimplexNoise.Evaluate(System.ReadOnlySpan<byte> permutation, System.ReadOnlySpan<byte> permutation2D, double x, double y) -> double
+static Supprocom.OpenSimplexNoise.OpenSimplexNoise.Evaluate(System.ReadOnlySpan<byte> permutation, System.ReadOnlySpan<byte> permutation3D, double x, double y, double z) -> double
+static Supprocom.OpenSimplexNoise.OpenSimplexNoise.Evaluate(System.ReadOnlySpan<byte> permutation, System.ReadOnlySpan<byte> permutation4D, double x, double y, double z, double w) -> double
+static Supprocom.OpenSimplexNoise.OpenSimplexNoise.Initialize(long seed, System.Span<byte> permutation, System.Span<byte> permutation2D, System.Span<byte> permutation3D, System.Span<byte> permutation4D, System.Span<byte> sourceScratch) -> void

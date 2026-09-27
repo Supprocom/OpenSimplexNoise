@@ -2,23 +2,25 @@ using System.Reflection;
 
 namespace Supprocom.OpenSimplexNoise.Tests;
 
+/// <summary>Checks the released type identity and public member signatures.</summary>
 public sealed class PublicSurfaceTests
 {
+    /// <summary>Preserves the published constructors, constants, and sampling overloads.</summary>
     [Fact]
     public void OpenSimplexNoisePreservesConstructorsAndEvaluateOverloads()
     {
-        var type = typeof(global::Supprocom.OpenSimplexNoise.OpenSimplexNoise);
-        var assemblyName = type.Assembly.GetName();
-        var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
-        var instanceMethods = type.GetMethods(
+        Type type = typeof(global::Supprocom.OpenSimplexNoise.OpenSimplexNoise);
+        AssemblyName assemblyName = type.Assembly.GetName();
+        ConstructorInfo[] constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
+        MethodInfo[] instanceMethods = type.GetMethods(
             BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public);
-        var staticMethods = type.GetMethods(
+        MethodInfo[] staticMethods = type.GetMethods(
             BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
 
         Assert.True(type.IsPublic);
         Assert.Equal("Supprocom.OpenSimplexNoise.OpenSimplexNoise", type.FullName);
         Assert.Equal("Supprocom.OpenSimplexNoise", assemblyName.Name);
-        Assert.Equal(new Version(0, 1, 1, 0), assemblyName.Version);
+        Assert.Equal(new Version(0, 1, 2, 0), assemblyName.Version);
         Assert.Equal(2, constructors.Length);
         Assert.Contains(constructors, constructor => constructor.GetParameters().Length == 0);
         Assert.Contains(constructors, constructor => HasParameters(constructor, typeof(long)));
@@ -30,7 +32,7 @@ public sealed class PublicSurfaceTests
             IsEvaluate(method, typeof(double), typeof(double), typeof(double), typeof(double)));
         Assert.Equal(4, staticMethods.Length);
         Assert.Contains(staticMethods, method =>
-            method.Name == "Initialize" &&
+            string.Equals(method.Name, "Initialize", StringComparison.Ordinal) &&
             method.ReturnType == typeof(void) &&
             HasParameters(
                 method,
@@ -75,6 +77,6 @@ public sealed class PublicSurfaceTests
 
     private static bool IsEvaluate(MethodInfo method, params Type[] parameterTypes)
     {
-        return method.Name == "Evaluate" && method.ReturnType == typeof(double) && HasParameters(method, parameterTypes);
+        return string.Equals(method.Name, "Evaluate", StringComparison.Ordinal) && method.ReturnType == typeof(double) && HasParameters(method, parameterTypes);
     }
 }

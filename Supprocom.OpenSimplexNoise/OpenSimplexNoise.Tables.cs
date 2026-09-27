@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Supprocom.OpenSimplexNoise;
 
 public partial class OpenSimplexNoise
@@ -118,6 +120,7 @@ public partial class OpenSimplexNoise
             144, 6, 150, 6, 156, 6, 162, 6,
         ];
 
+    [SuppressMessage("Design", "MA0051", Justification = "This literal lookup table preserves exact published offset bits without allocating managed state.")]
     private static ReadOnlySpan<long> Contributions3D =>
     [
         0, 0, 0, 0, 0, 0, 1, 0,
@@ -248,6 +251,7 @@ public partial class OpenSimplexNoise
             -4611686018427387904, -4616189618054758400, 1, 2, 0, -4611686018427387904, -4609434218613702656, -4616189618054758400,
         ];
 
+    [SuppressMessage("Design", "MA0051", Justification = "This literal lookup table preserves exact published lookup pairs without allocating managed state.")]
     private static ReadOnlySpan<int> LookupPairs4D =>
     [
         0, 0, 1, 1, 2, 0, 5, 1,
@@ -416,6 +420,7 @@ public partial class OpenSimplexNoise
             908, 8, 916, 8, 924, 8, 932, 8,
         ];
 
+    [SuppressMessage("Design", "MA0051", Justification = "This literal lookup table preserves exact published offset bits without allocating managed state.")]
     private static ReadOnlySpan<long> Contributions4D =>
     [
         0, 0, 0, 0, 0, 0, 0, 0,

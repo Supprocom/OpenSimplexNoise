@@ -1,0 +1,7 @@
+# Sampling and initialization must never block on asynchronous work or sleep.
+M:System.Threading.Tasks.Task.Wait; Use asynchronous coordination outside the sampling boundary.
+P:System.Threading.Tasks.Task`1.Result; Await asynchronous work outside the sampling boundary.
+M:System.Threading.Thread.Sleep(System.Int32); Do not block the sampling thread.
+M:System.Threading.Thread.Sleep(System.TimeSpan); Do not block the sampling thread.
+# Seeded noise must use the specified permutation algorithm, never shared randomness.
+P:System.Random.Shared; Preserve deterministic seeded noise and caller-owned state.

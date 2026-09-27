@@ -5,10 +5,14 @@ using Noise = global::Supprocom.OpenSimplexNoise.OpenSimplexNoise;
 
 namespace Supprocom.OpenSimplexNoise.Tests;
 
+/// <summary>Checks exact caller-owned state, validation, and managed allocation behavior.</summary>
 public sealed class AllocationFreeApiTests
 {
-    private const int StateLength = Noise.PermutationTableLength * 4 + Noise.SourceScratchLength;
+    private const int StateLength = (Noise.PermutationTableLength * 4) + Noise.SourceScratchLength;
 
+    /// <summary>Preserves the published permutation state for representative seeds.</summary>
+    /// <param name="seed">The reference seed.</param>
+    /// <param name="expectedHash">The published hash of all four permutation tables.</param>
     [Theory]
     [InlineData(0L, "EF7A513DA21876B001C48D30ADA49FFAE6A4847BCAE32CCAF554882DF25E0C44")]
     [InlineData(-1L, "77962DB45909B83E854A9C0D11DBF7B91BE86874E6BECEDA021B1515DAC6E8A1")]
@@ -35,11 +39,16 @@ public sealed class AllocationFreeApiTests
             sourceScratch);
 
         Span<byte> digest = stackalloc byte[SHA256.HashSizeInBytes];
-        SHA256.HashData(state[..(Noise.PermutationTableLength * 4)], digest);
+        _ = SHA256.HashData(state[..(Noise.PermutationTableLength * 4)], digest);
 
         Assert.Equal(expectedHash, Convert.ToHexString(digest));
     }
 
+    /// <summary>Preserves the published samples at negative coordinates.</summary>
+    /// <param name="seed">The reference seed.</param>
+    /// <param name="expected2D">The published two-dimensional output bits.</param>
+    /// <param name="expected3D">The published three-dimensional output bits.</param>
+    /// <param name="expected4D">The published four-dimensional output bits.</param>
     [Theory]
     [InlineData(0L, 0xBFD1846CDF5D1502UL, 0x3FD76FBC8E82DBDFUL, 0x3FD64E895C741CC7UL)]
     [InlineData(-1L, 0xBFDF15BCED1C7A04UL, 0x3FD5EA896A7F0DD0UL, 0xBFA913420E2A7A75UL)]
@@ -76,6 +85,11 @@ public sealed class AllocationFreeApiTests
             Noise.Evaluate(permutation, permutation4D, -0.125, -17.5, -2048.75, -65_535.5));
     }
 
+    /// <summary>Preserves the published samples at large finite coordinates.</summary>
+    /// <param name="seed">The reference seed.</param>
+    /// <param name="expected2D">The published two-dimensional output bits.</param>
+    /// <param name="expected3D">The published three-dimensional output bits.</param>
+    /// <param name="expected4D">The published four-dimensional output bits.</param>
     [Theory]
     [InlineData(0L, 0xBFE11CE126900D80UL, 0xBF978A6FDD460634UL, 0xBFB748BD59689B92UL)]
     [InlineData(-1L, 0xBFDC388E58CD2A90UL, 0xBFD123F79126D966UL, 0xBFD178C8D826799BUL)]
@@ -127,6 +141,10 @@ public sealed class AllocationFreeApiTests
                 -268_435_455.25));
     }
 
+    /// <summary>Preserves the published samples at the origin.</summary>
+    /// <param name="seed">The reference seed.</param>
+    /// <param name="expected3D">The published three-dimensional output bits.</param>
+    /// <param name="expected4D">The published four-dimensional output bits.</param>
     [Theory]
     [InlineData(0L, 0x324027C45979C952UL, 0xB389F09AB14D5903UL)]
     [InlineData(-1L, 0xB2530E158A5B21F6UL, 0xB35E2E5A7B6BF5AFUL)]
@@ -160,6 +178,7 @@ public sealed class AllocationFreeApiTests
         AssertBits(expected4D, Noise.Evaluate(permutation, permutation4D, 0.0, 0.0, 0.0, 0.0));
     }
 
+    /// <summary>Preserves the published hash of 75,000 deterministic samples.</summary>
     [Fact]
     public void CallerOwnedStatePreservesPublishedCorpusHash()
     {
@@ -198,14 +217,15 @@ public sealed class AllocationFreeApiTests
         Assert.Equal(expectedHash, Convert.ToHexString(hash.GetHashAndReset()));
     }
 
+    /// <summary>Preserves the published exception behavior for extreme coordinates.</summary>
     [Fact]
     public void CallerOwnedStatePreservesPublishedExtremeBehavior()
     {
-        var permutation = new byte[Noise.PermutationTableLength];
-        var permutation2D = new byte[Noise.PermutationTableLength];
-        var permutation3D = new byte[Noise.PermutationTableLength];
-        var permutation4D = new byte[Noise.PermutationTableLength];
-        var sourceScratch = new byte[Noise.SourceScratchLength];
+        byte[] permutation = new byte[Noise.PermutationTableLength];
+        byte[] permutation2D = new byte[Noise.PermutationTableLength];
+        byte[] permutation3D = new byte[Noise.PermutationTableLength];
+        byte[] permutation4D = new byte[Noise.PermutationTableLength];
+        byte[] sourceScratch = new byte[Noise.SourceScratchLength];
         Noise.Initialize(
             123456,
             permutation,
@@ -214,16 +234,16 @@ public sealed class AllocationFreeApiTests
             permutation4D,
             sourceScratch);
 
-        Assert.Throws<IndexOutOfRangeException>(
+        _ = Assert.Throws<IndexOutOfRangeException>(
             () => Noise.Evaluate(permutation, permutation2D, double.MaxValue, double.MinValue));
-        Assert.Throws<IndexOutOfRangeException>(
+        _ = Assert.Throws<IndexOutOfRangeException>(
             () => Noise.Evaluate(
                 permutation,
                 permutation3D,
                 double.MaxValue,
                 double.MinValue,
                 double.MaxValue));
-        Assert.Throws<IndexOutOfRangeException>(
+        _ = Assert.Throws<IndexOutOfRangeException>(
             () => Noise.Evaluate(
                 permutation,
                 permutation4D,
@@ -231,14 +251,14 @@ public sealed class AllocationFreeApiTests
                 double.MinValue,
                 double.MaxValue,
                 double.MinValue));
-        Assert.Throws<IndexOutOfRangeException>(
+        _ = Assert.Throws<IndexOutOfRangeException>(
             () => Noise.Evaluate(
                 permutation,
                 permutation3D,
                 2_147_000_000.25,
                 -2_146_999_999.75,
                 1_073_500_000.5));
-        Assert.Throws<IndexOutOfRangeException>(
+        _ = Assert.Throws<IndexOutOfRangeException>(
             () => Noise.Evaluate(
                 permutation,
                 permutation4D,
@@ -248,6 +268,7 @@ public sealed class AllocationFreeApiTests
                 -536_750_000.25));
     }
 
+    /// <summary>Checks that the initial calls require no managed state or allocations.</summary>
     [Fact]
     public void InitializationAndEvaluationAllocateNoManagedBytes()
     {
@@ -283,6 +304,7 @@ public sealed class AllocationFreeApiTests
         Assert.NotEqual(0.0, total);
     }
 
+    /// <summary>Checks that repeated initialization and sampling allocate no managed bytes.</summary>
     [Fact]
     public void RepeatedInitializationAndEvaluationAllocateNoManagedBytes()
     {
@@ -326,6 +348,7 @@ public sealed class AllocationFreeApiTests
         Assert.NotEqual(0.0, total);
     }
 
+    /// <summary>Checks that initializing one caller-owned state cannot change another.</summary>
     [Fact]
     public void CallerOwnedStatesRemainIndependent()
     {
@@ -371,18 +394,55 @@ public sealed class AllocationFreeApiTests
                 Noise.Evaluate(firstPermutation, firstPermutation4D, 12.5, -4.25, 8.0, 0.5)));
     }
 
+    /// <summary>Rejects invalid buffers before initialization or sampling.</summary>
     [Fact]
     public void InitializationRejectsShortOrOverlappingBuffers()
     {
-        var shortBuffer = new byte[Noise.PermutationTableLength - 1];
-        var buffer = new byte[Noise.PermutationTableLength];
+        byte[] shortBuffer = new byte[Noise.PermutationTableLength - 1];
+        byte[] buffer = new byte[Noise.PermutationTableLength];
 
-        Assert.Throws<ArgumentException>(
+        _ = Assert.Throws<ArgumentException>(
             () => Noise.Initialize(0, shortBuffer, buffer, buffer, buffer, buffer));
-        Assert.Throws<ArgumentException>(
+        _ = Assert.Throws<ArgumentException>(
             () => Noise.Initialize(0, buffer, buffer, buffer, buffer, buffer));
-        Assert.Throws<ArgumentException>(
+        _ = Assert.Throws<ArgumentException>(
             () => Noise.Evaluate(shortBuffer, buffer, 0.0, 0.0));
+    }
+
+    /// <summary>Identifies all ten overlapping pairs without modifying any buffer.</summary>
+    /// <param name="first">The first overlapping buffer index.</param>
+    /// <param name="second">The second overlapping buffer index.</param>
+    /// <param name="parameterName">The second buffer's public parameter name.</param>
+    [Theory]
+    [InlineData(0, 1, "permutation2D")]
+    [InlineData(0, 2, "permutation3D")]
+    [InlineData(0, 3, "permutation4D")]
+    [InlineData(0, 4, "sourceScratch")]
+    [InlineData(1, 2, "permutation3D")]
+    [InlineData(1, 3, "permutation4D")]
+    [InlineData(1, 4, "sourceScratch")]
+    [InlineData(2, 3, "permutation4D")]
+    [InlineData(2, 4, "sourceScratch")]
+    [InlineData(3, 4, "sourceScratch")]
+    public void InitializationIdentifiesEveryOverlappingPairBeforeWriting(
+        int first,
+        int second,
+        string parameterName)
+    {
+        byte[][] buffers =
+        [
+            new byte[Noise.PermutationTableLength],
+            new byte[Noise.PermutationTableLength],
+            new byte[Noise.PermutationTableLength],
+            new byte[Noise.PermutationTableLength],
+            new byte[Noise.SourceScratchLength],
+        ];
+        buffers[second] = buffers[first];
+
+        _ = Assert.Throws<ArgumentException>(
+            parameterName,
+            () => Noise.Initialize(0, buffers[0], buffers[1], buffers[2], buffers[3], buffers[4]));
+        Assert.All(buffers, buffer => Assert.All(buffer, value => Assert.Equal(0, value)));
     }
 
     private static void GetStateSpans(
@@ -409,7 +469,7 @@ public sealed class AllocationFreeApiTests
 
     private static ulong Next(ref ulong state)
     {
-        state = unchecked(state * 6364136223846793005UL + 1442695040888963407UL);
+        state = unchecked((state * 6364136223846793005UL) + 1442695040888963407UL);
         return state;
     }
 

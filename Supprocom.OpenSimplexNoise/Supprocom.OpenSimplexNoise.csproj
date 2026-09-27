@@ -5,7 +5,7 @@
     <AssemblyName>Supprocom.OpenSimplexNoise</AssemblyName>
     <IsPackable>true</IsPackable>
     <PackageId>Supprocom.OpenSimplexNoise</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>Supprocom</Authors>
     <Company>Supprocom</Company>
     <Copyright>Copyright (C) 2026 mkn8rn</Copyright>
@@ -15,15 +15,17 @@
     <PackageProjectUrl>https://github.com/Supprocom/OpenSimplexNoise</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>opensimplex;noise;procedural-generation;allocation-free;span;2d;3d;4d</PackageTags>
-    <PackageReleaseNotes>Adds caller-owned Span initialization and ReadOnlySpan evaluation without managed allocations. Existing constructors and exact output behavior remain available.</PackageReleaseNotes>
+    <PackageReleaseNotes>Enforces the complete analyzer gate, documents and tracks the existing public API, and identifies overlapping initialization buffers. Preserves exact noise outputs and allocation-free caller-owned state.</PackageReleaseNotes>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\artifacts\packages\</PackageOutputPath>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <SourceRevisionId Condition="'$(RepositoryCommit)' != ''">$(RepositoryCommit)</SourceRevisionId>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="5.6.0" PrivateAssets="all" />
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
     <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE" />
     <None Include="..\NOTICE" Pack="true" PackagePath="NOTICE" />
     <None Include="..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="THIRD-PARTY-NOTICES.md" />

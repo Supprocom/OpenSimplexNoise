@@ -15,10 +15,10 @@ These compatibility constructors allocate managed arrays.
 
 ## Installation
 
-Use this command to install version 0.1.1.
+Use this command to install version 0.1.2.
 
 ```shell
-dotnet add package Supprocom.OpenSimplexNoise --version 0.1.1
+dotnet add package Supprocom.OpenSimplexNoise --version 0.1.2
 ```
 
 ## Example
@@ -67,6 +67,20 @@ allocate managed memory.
 Package tests compare exact output bits with the published version 0.1.0 output.
 The tests include zero, negative, large, epsilon, and finite double-limit inputs.
 They also measure managed allocations for initialization and evaluation.
+
+## Development
+
+Build and test the solution in Release mode with the .NET 10 SDK:
+
+```shell
+dotnet test Supprocom.OpenSimplexNoise.slnx --configuration Release
+```
+
+The build runs the complete SDK analyzer rule set and pinned Meziantou,
+Roslynator, threading, banned API, public API, and xUnit analyzers. Enabled
+diagnostics, including code style suggestions, are treated as build errors.
+The tracked public API files preserve the released constructors, constants,
+and evaluation overloads. Analyzer dependencies are private to the build.
 
 ## Source
 
