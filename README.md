@@ -18,7 +18,7 @@ These compatibility constructors allocate managed arrays.
 Use this command to install version 0.1.2.
 
 ```shell
-dotnet add package Supprocom.OpenSimplexNoise --version 0.1.2
+dotnet add package Supprocom.OpenSimplexNoise --version 0.1.3
 ```
 
 ## Example

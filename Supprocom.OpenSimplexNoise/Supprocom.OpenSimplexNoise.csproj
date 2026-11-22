@@ -5,17 +5,18 @@
     <AssemblyName>Supprocom.OpenSimplexNoise</AssemblyName>
     <IsPackable>true</IsPackable>
     <PackageId>Supprocom.OpenSimplexNoise</PackageId>
-    <Version>0.1.2</Version>
+    <Version>0.1.3</Version>
     <Authors>Supprocom</Authors>
     <Company>Supprocom</Company>
     <Copyright>Copyright (C) 2026 mkn8rn</Copyright>
-    <Description>A deterministic C# implementation of OpenSimplex Noise with allocation-free caller-owned state APIs.</Description>
-    <PackageDescription>A deterministic C# implementation of OpenSimplex Noise with allocation-free initialization and two-dimensional, three-dimensional, and four-dimensional evaluation.</PackageDescription>
-    <PackageLicenseExpression>AGPL-3.0-only AND Unlicense</PackageLicenseExpression>
+    <PackageLicenseFile>PACKAGE-LICENSE.txt</PackageLicenseFile>
+    <Description>Commercial or AGPL-3.0. A deterministic C# implementation of OpenSimplex Noise with allocation-free caller-owned state APIs.</Description>
+    <PackageDescription>Commercial or AGPL-3.0. A deterministic C# implementation of OpenSimplex Noise with allocation-free initialization and two-dimensional, three-dimensional, and four-dimensional evaluation.</PackageDescription>
     <PackageProjectUrl>https://github.com/Supprocom/OpenSimplexNoise</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>opensimplex;noise;procedural-generation;allocation-free;span;2d;3d;4d</PackageTags>
-    <PackageReleaseNotes>Enforces the complete analyzer gate, documents and tracks the existing public API, and identifies overlapping initialization buffers. Preserves exact noise outputs and allocation-free caller-owned state.</PackageReleaseNotes>
+    <PackageReleaseNotes>Dual-licensed: Commercial or AGPL-3.0. Adds the Supprocom Commercial License as an alternative to the AGPL-3.0.
+Security support until November 2031</PackageReleaseNotes>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\artifacts\packages\</PackageOutputPath>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -33,4 +34,31 @@
   </ItemGroup>
 
   <Import Project="..\build\PackageReadme.targets" />
+  <!-- The package license file is generated from the repository's COMMERCIAL-LICENSE and LICENSE files. -->
+  <PropertyGroup>
+    <SupprocomPackageLicensePath>$(BaseIntermediateOutputPath)PACKAGE-LICENSE.txt</SupprocomPackageLicensePath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(SupprocomPackageLicensePath)" Pack="true" PackagePath="PACKAGE-LICENSE.txt" Visible="false" />
+  </ItemGroup>
+  <Target Name="WriteSupprocomPackageLicense" BeforeTargets="_GetPackageFiles;GenerateNuspec">
+    <PropertyGroup>
+      <_SupprocomCommercialText>$([MSBuild]::Escape($([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/../COMMERCIAL-LICENSE').TrimEnd())))</_SupprocomCommercialText>
+      <_SupprocomAgplText>$([MSBuild]::Escape($([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)/../LICENSE').TrimEnd())))</_SupprocomAgplText>
+      <_SupprocomPackageLicenseText>Commercial or AGPL-3.0
+
+This package is available under your choice of two licenses:
+- the Supprocom Commercial License 1.0, for businesses with a registered Supprocom sponsorship (https://github.com/sponsors/Supprocom)%3B or
+- the GNU Affero General Public License, version 3 (AGPL-3.0).
+
+Both texts follow. For each version, the COMMERCIAL-LICENSE file in the project's GitHub repository at the commit this package was built from prevails over this copy.
+
+==============================================================================
+$(_SupprocomCommercialText)
+
+==============================================================================
+$(_SupprocomAgplText)</_SupprocomPackageLicenseText>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(SupprocomPackageLicensePath)" Lines="$(_SupprocomPackageLicenseText)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
 </Project>
