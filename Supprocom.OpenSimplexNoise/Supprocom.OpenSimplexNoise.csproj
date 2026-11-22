@@ -5,7 +5,7 @@
     <AssemblyName>Supprocom.OpenSimplexNoise</AssemblyName>
     <IsPackable>true</IsPackable>
     <PackageId>Supprocom.OpenSimplexNoise</PackageId>
-    <Version>0.1.3</Version>
+    <Version>0.1.4</Version>
     <Authors>Supprocom</Authors>
     <Company>Supprocom</Company>
     <Copyright>Copyright (C) 2026 mkn8rn</Copyright>
@@ -15,7 +15,7 @@
     <PackageProjectUrl>https://github.com/Supprocom/OpenSimplexNoise</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>opensimplex;noise;procedural-generation;allocation-free;span;2d;3d;4d</PackageTags>
-    <PackageReleaseNotes>Dual-licensed: Commercial or AGPL-3.0. Adds the Supprocom Commercial License as an alternative to the AGPL-3.0.
+    <PackageReleaseNotes>Dual-licensed: Commercial or AGPL-3.0. The Supprocom Commercial License 2.0 comes with a Patreon membership (https://www.patreon.com/cw/mkn8rn); see the COMMERCIAL-LICENSE file.
 Security support until November 2031</PackageReleaseNotes>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\artifacts\packages\</PackageOutputPath>
     <IncludeSymbols>true</IncludeSymbols>
@@ -48,7 +48,7 @@ Security support until November 2031</PackageReleaseNotes>
       <_SupprocomPackageLicenseText>Commercial or AGPL-3.0
 
 This package is available under your choice of two licenses:
-- the Supprocom Commercial License 1.0, for businesses with a registered Supprocom sponsorship (https://github.com/sponsors/Supprocom)%3B or
+- the Supprocom Commercial License 2.0, for businesses with a Patreon membership (https://www.patreon.com/cw/mkn8rn)%3B or
 - the GNU Affero General Public License, version 3 (AGPL-3.0).
 
 Both texts follow. For each version, the COMMERCIAL-LICENSE file in the project's GitHub repository at the commit this package was built from prevails over this copy.
