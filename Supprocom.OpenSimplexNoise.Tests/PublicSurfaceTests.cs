@@ -20,7 +20,7 @@ public sealed class PublicSurfaceTests
         Assert.True(type.IsPublic);
         Assert.Equal("Supprocom.OpenSimplexNoise.OpenSimplexNoise", type.FullName);
         Assert.Equal("Supprocom.OpenSimplexNoise", assemblyName.Name);
-        Assert.Equal(new Version(0, 1, 3, 0), assemblyName.Version);
+        Assert.Equal(new Version(0, 1, 4, 0), assemblyName.Version);
         Assert.Equal(2, constructors.Length);
         Assert.Contains(constructors, constructor => constructor.GetParameters().Length == 0);
         Assert.Contains(constructors, constructor => HasParameters(constructor, typeof(long)));
